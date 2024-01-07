@@ -1,7 +1,7 @@
 "use client"
 import { APPLICATION_CONFIG } from "@/config";
 import type { IHttpServiceConfig } from "@/types"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 
 const { apiURL } = APPLICATION_CONFIG["PRODUCTION"];
 
@@ -15,7 +15,13 @@ const httpService = async<T, K>({ method = "get", url, body }: IHttpServiceConfi
                 data: body,
             }).then((res) => {
                 resolve(res.data?.data)
-            }).catch(() => {
+            }).catch((error: AxiosError) => {
+                if (error.response?.status === 401) {
+                    localStorage.removeItem("token");
+                    if (token) {
+                        location.reload()
+                    }
+                }
                 reject("An Error Occured")
             })
         } catch (error) {
