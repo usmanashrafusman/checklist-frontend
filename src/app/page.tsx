@@ -10,7 +10,7 @@ import Loading from "@/components/ui/common/Loading"
 import Login from '@/components/ui/login/Login';
 
 const Home = () => {
-  const [db, setDB] = useState<IDatabase>({ database: null, collections: null });
+  const [db, setDB] = useState<IDatabase>({ database: null, collections: null, collectionSubscription: null, replications: null });
   const { status, user, handleLogin } = useAuth();
 
   useEffect(() => {
